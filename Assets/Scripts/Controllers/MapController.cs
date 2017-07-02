@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using UnityEngine;
 
 public class MapController
 {
@@ -8,27 +9,39 @@ public class MapController
 
 	public MapController ()
 	{
-		
+		CreateHexagonMap (2);
 	}
 
 	#region Initialization
 
-	public bool CreateTile (OffsetCoordinate offset)
+	void CreateHexagonMap (int mapRadius)
+	{
+		for (int u = -mapRadius; u <= mapRadius; u++) {
+			int v1 = Mathf.Max (-mapRadius, u - mapRadius);
+			int v2 = Mathf.Min (mapRadius, u + mapRadius);
+			for (int v = v1; v <= v2; v++) {
+				CreateTile (new AxialCoordinate (u, v));
+				Debug.Log (u + " " + v);
+			}
+		}
+	}
+
+	void CreateTile (OffsetCoordinate offset)
 	{
 		var axial = MapUtils.ConvertOffsetToAxial (offset);
+		CreateTile (axial);
+	}
 
+	void CreateTile (AxialCoordinate axial)
+	{
 		if (!_tileDictionary.ContainsKey (axial)) {
 			_tileDictionary.Add (axial, new Tile ());
 			CreateEdges (axial);
 			CreateVertices (axial);
-
-			return true;
 		}
-
-		return false;
 	}
 
-	private void CreateEdges (AxialCoordinate axial)
+	void CreateEdges (AxialCoordinate axial)
 	{
 		var edgeCoordinates = MapUtils.ComputeTileBorders (axial);
 
@@ -39,7 +52,7 @@ public class MapController
 		}
 	}
 
-	private void CreateVertices (AxialCoordinate axial)
+	void CreateVertices (AxialCoordinate axial)
 	{
 		var verticeCoordinates = MapUtils.ComputeTileCorners (axial);
 
@@ -59,4 +72,9 @@ public class MapController
 	#region Edge Getter&Setter
 
 	#endregion //Edge Getter&Setter
+
+	public List<AxialCoordinate> GetAllTilePositions ()
+	{
+		return new List<AxialCoordinate> (_tileDictionary.Keys);
+	}
 }

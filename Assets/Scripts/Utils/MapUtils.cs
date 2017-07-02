@@ -55,7 +55,21 @@ public static class MapUtils
 		return new Vector3 (vec2.x, vec2.y, 0);
 	}
 
+	public static Vector3 ConvertVerticeToPixel (VerticeCoordinate vertice)
+	{
+		var vec2 = vertice.U * MapConstants.AxisU + vertice.V * MapConstants.AxisV;
 
+		switch (vertice.D) {
+		case eVerticeDirection.LEFT:
+			vec2.x -= MapConstants.HexSize;
+			break;
+		case eVerticeDirection.RIGHT:
+			vec2.x += MapConstants.HexSize;
+			break;
+		}
+
+		return new Vector3 (vec2.x, vec2.y, 0);
+	}
 
 	#endregion
 

@@ -32,13 +32,17 @@ public class MapConstants : MonoBehaviour
 
 	public static float HexWidth{ get { return Instance._hexWidth; } }
 
+	/// <summary>
+	/// The half-width of a hex.
+	/// </summary>
+	/// <value>The size of the hex.</value>
 	public static float HexSize{ get { return HexWidth * 0.5f; } }
 
-	public static float HexHeight{ get { return Mathf.Sqrt (3) * 0.5f * HexWidth; } }
+	public static float HexHeight{ get { return 0.866025404f /* hardcoded sqrt(3)/2 */ * HexWidth; } }
 
 	public static Vector2 AxisV{ get { return new Vector2 (0, HexHeight); } }
 
-	public static Vector2 AxisU{ get { return new Vector2 (0.75f * HexWidth, 0.5f * HexHeight); } }
+	public static Vector2 AxisU{ get { return new Vector2 (0.75f * HexWidth, -0.5f * HexHeight); } }
 
 	#endregion //Properties
 }

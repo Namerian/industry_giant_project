@@ -2,15 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class GameController : MonoBehaviour {
+public class GameController : MonoBehaviour
+{
 
-	// Use this for initialization
-	void Start () {
-		
+	MapController _mapController;
+
+	[SerializeField]
+	MapView _mapView;
+
+	void Start ()
+	{
+		_mapController = new MapController ();
+		_mapView.Initialize (_mapController);
 	}
-	
-	// Update is called once per frame
-	void Update () {
+
+	void Update ()
+	{
 		
 	}
 }
