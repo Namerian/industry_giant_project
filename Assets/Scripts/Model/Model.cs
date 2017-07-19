@@ -1,29 +1,37 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class MapController
+public delegate void OnMapChangedDelegate ();
+
+public class Model
 {
 	readonly Dictionary<AxialCoordinate,Tile> _tileDictionary = new Dictionary<AxialCoordinate, Tile> ();
 	readonly Dictionary<EdgeCoordinate,Edge> _edgeDictionary = new Dictionary<EdgeCoordinate, Edge> ();
 	readonly Dictionary<VerticeCoordinate,Vertice> _verticeDictionary = new Dictionary<VerticeCoordinate, Vertice> ();
 
-	public MapController ()
+	Dictionary<Guid,Deposit> _depositDictionary = new Dictionary<Guid, Deposit> ();
+
+	public Model ()
 	{
-		CreateHexagonMap (2);
 	}
+
+	//#######################################################################################
 
 	#region Initialization
 
-	void CreateHexagonMap (int mapRadius)
+	public void CreateHexagonMap (int mapRadius)
 	{
 		for (int u = -mapRadius; u <= mapRadius; u++) {
 			int v1 = Mathf.Max (-mapRadius, u - mapRadius);
 			int v2 = Mathf.Min (mapRadius, u + mapRadius);
 			for (int v = v1; v <= v2; v++) {
 				CreateTile (new AxialCoordinate (u, v));
-				Debug.Log (u + " " + v);
+				//Debug.Log (u + " " + v);
 			}
 		}
+
+		SendOnMapChangedEvent ();
 	}
 
 	void CreateTile (OffsetCoordinate offset)
@@ -63,18 +71,35 @@ public class MapController
 		}
 	}
 
-	#endregion //Initialization
+	#endregion Initialization
 
-	#region Tile Getter&Setter
+	//#######################################################################################
+	//#######################################################################################
 
-	#endregion //Tile Getter&Setter
+	#region Events
 
-	#region Edge Getter&Setter
+	public event OnMapChangedDelegate OnMapChangedEvent;
 
-	#endregion //Edge Getter&Setter
+	void SendOnMapChangedEvent ()
+	{
+		if (OnMapChangedEvent != null) {
+			OnMapChangedEvent ();
+		}
+	}
+
+	#endregion Events
+
+	//#######################################################################################
+	//#######################################################################################
+
+	#region Map Getter&Setter
 
 	public List<AxialCoordinate> GetAllTilePositions ()
 	{
 		return new List<AxialCoordinate> (_tileDictionary.Keys);
 	}
+
+	#endregion Map Getter&Setter
+
+	//#######################################################################################
 }

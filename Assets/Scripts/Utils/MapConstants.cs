@@ -6,9 +6,9 @@ public class MapConstants : MonoBehaviour
 {
 	#region Singleton
 
-	private static MapConstants Instance{ get; set; }
+	static MapConstants Instance{ get; set; }
 
-	private void Awake ()
+	void Awake ()
 	{
 		if (Instance == null) {
 			Instance = this;
@@ -17,16 +17,16 @@ public class MapConstants : MonoBehaviour
 		}
 	}
 
-	#endregion //Singleton
+	#endregion Singleton
 
 	#region Editor
 
 	[Header ("Heaxagon")]
 
 	[SerializeField]
-	private float _hexWidth = 1;
+	float _hexWidth = 2;
 
-	#endregion //Editor
+	#endregion Editor
 
 	#region Properties
 
@@ -44,5 +44,5 @@ public class MapConstants : MonoBehaviour
 
 	public static Vector2 AxisU{ get { return new Vector2 (0.75f * HexWidth, -0.5f * HexHeight); } }
 
-	#endregion //Properties
+	#endregion Properties
 }

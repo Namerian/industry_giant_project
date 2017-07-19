@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class MapView : MonoBehaviour
@@ -13,31 +12,34 @@ public class MapView : MonoBehaviour
 	readonly Vector2 northwestUV = new Vector2 (0.25f, 1f);
 
 	[SerializeField]
-	MeshFilter _meshFilter = null;
+	MeshFilter _meshFilter;
 
 	[SerializeField]
-	MeshCollider _meshCollider = null;
+	MeshCollider _meshCollider;
 
-	MapController _mapController;
+	Model _model;
 
-	bool _initialized = false;
+	bool _initialized;
 
-	public void Initialize (MapController mapController)
+	public void Initialize (Model mapController)
 	{
-		_mapController = mapController;
-
+		_model = mapController;
+		_model.OnMapChangedEvent += OnMapChanged;
 		_initialized = true;
+	}
 
+	void OnMapChanged ()
+	{
 		Draw ();
 	}
 
-	public void Draw ()
+	void Draw ()
 	{
 		if (!_initialized) {
 			return;
 		}
 
-		var tilePositions = _mapController.GetAllTilePositions ();
+		var tilePositions = _model.GetAllTilePositions ();
 
 		var meshVertices = new List<Vector3> ();
 		var meshIndices = new List<int> ();
